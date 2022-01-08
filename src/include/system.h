@@ -2,8 +2,6 @@
 #include <cstdint>
 #include "function.h"
 
-typedef void* type_t;
-
 extern void move_csr();
 
 extern void gdt_install();
@@ -17,11 +15,11 @@ struct registers {
     uint32_t eip, cs, eflags, useresp, ss;
 };
 
-void irq_install_handler(int32_t irq, function<void(registers*)> handler);
+void irq_install_handler(int32_t irq, function<void(const registers&)> handler);
 void irq_uninstall_handler(int32_t irq);
 void irq_install();
 
-void irs_install_handler(int32_t irs, function<void(registers*)> handler);
+void irs_install_handler(int32_t irs, function<void(const registers&)> handler);
 
 void timer_install(uint32_t frequency);
 

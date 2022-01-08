@@ -24,7 +24,7 @@ void* irq_routines[16] = {
     0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void irq_install_handler(int32_t irq, function<void(registers*)> handler) {
+void irq_install_handler(int32_t irq, function<void(const registers&)> handler) {
     irq_routines[irq] = (void*)handler;
 }
 
@@ -66,15 +66,15 @@ void irq_install() {
     idt_set_gate(47, (unsigned)_irq15, 0x08, 0x8E);
 }
 
-extern "C" void irq_handler(registers* r) {
-    function<void(registers*)> handler;
+extern "C" void irq_handler(const registers& r) {
+    function<void(const registers&)> handler;
 
-    handler = irq_routines[r->int_no - 32];
+    handler = irq_routines[r.int_no - 32];
     if (handler) {
         handler(r);
     }
 
-    if (r->int_no >= 40) {
+    if (r.int_no >= 40) {
         outportb(0xA0, 0x20);
     }
 

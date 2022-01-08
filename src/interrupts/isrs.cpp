@@ -113,20 +113,20 @@ void *irs_routines[32] = {
     0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void irs_install_handler(int32_t irs, void (*handler)(registers* r)) {
+void irs_install_handler(int32_t irs, void (*handler)(const registers& r)) {
     irs_routines[irs] = (void*)handler;
 }
 
-extern "C" void fault_handler(registers* r) {
-    if (r->int_no < 32) {
-        function<void(registers*)> handler;
+extern "C" void fault_handler(const registers& r) {
+    if (r.int_no < 32) {
+        function<void(const registers&)> handler;
 
-        handler = irs_routines[r->int_no];
+        handler = irs_routines[r.int_no];
         if (handler) {
             handler(r);
         }
         else {
-            puts(exception_messages[r->int_no]);
+            puts(exception_messages[r.int_no]);
             puts(" Exception. System Halted!\n");
             for (;;);
         }

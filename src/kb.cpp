@@ -41,7 +41,7 @@ uint8_t kbdus[128] = {
     0,	/* All other keys are undefined */
 };
 
-void keyboard_handler(registers* r) {
+void keyboard_handler(const registers& r) {
     uint8_t scancode;
 
     scancode = inportb(0x60);
