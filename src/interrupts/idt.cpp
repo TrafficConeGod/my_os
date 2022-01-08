@@ -21,11 +21,12 @@ idt_ptr idtp;
 extern "C" void idt_load();
 
 void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags) {
-    idt[num].base_lo = base & 0xFFFF;
-    idt[num].base_hi = (base >> 16) & 0xFFFF;
-    idt[num].always0 = 0;
-    idt[num].sel = sel;
-    idt[num].flags = flags;
+    auto& entry = idt[num];
+    entry.base_lo = base & 0xFFFF;
+    entry.base_hi = (base >> 16) & 0xFFFF;
+    entry.always0 = 0;
+    entry.sel = sel;
+    entry.flags = flags;
 }
 
 void idt_install() {

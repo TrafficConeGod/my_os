@@ -21,15 +21,16 @@ gdt_ptr gp;
 extern "C" void gdt_flush();
 
 void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
-    gdt[num].base_low = (base & 0xFFFF);
-    gdt[num].base_middle = (base >> 16) & 0xFF;
-    gdt[num].base_high = (base >> 24) & 0xFF;
+    auto& entry = gdt[num];
+    entry.base_low = (base & 0xFFFF);
+    entry.base_middle = (base >> 16) & 0xFF;
+    entry.base_high = (base >> 24) & 0xFF;
 
-    gdt[num].limit_low = (limit & 0xFFFF);
-    gdt[num].granularity = ((limit >> 16) & 0x0F);
+    entry.limit_low = (limit & 0xFFFF);
+    entry.granularity = ((limit >> 16) & 0x0F);
 
-    gdt[num].granularity |= (gran & 0xF0);
-    gdt[num].access = access;
+    entry.granularity |= (gran & 0xF0);
+    entry.access = access;
 }
 
 void gdt_install() {
