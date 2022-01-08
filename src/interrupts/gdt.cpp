@@ -1,4 +1,5 @@
 #include "../include/system.h"
+#include "array.h"
 
 struct gdt_entry {
     uint16_t limit_low;
@@ -14,7 +15,7 @@ struct gdt_ptr {
     uint32_t base;
 } __attribute__ ((packed));
 
-gdt_entry gdt[5];
+array<gdt_entry, 5> gdt;
 gdt_ptr gp;
 
 extern "C" void gdt_flush();

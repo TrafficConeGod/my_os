@@ -1,5 +1,6 @@
 #include <system.h>
 #include <basic.h>
+#include "array.h"
 #include "function.h"
 
 extern "C" void _irq0();
@@ -19,20 +20,21 @@ extern "C" void _irq13();
 extern "C" void _irq14();
 extern "C" void _irq15();
 
-void* irq_routines[16] = {
+void* irq_routines_temp[16] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 };
+array<function<void(const registers&)>, 16> irq_routines = (function<void(const registers&)>*)irq_routines_temp;
 
 void irq_install_handler(int32_t irq, function<void(const registers&)> handler) {
-    irq_routines[irq] = (void*)handler;
+    irq_routines[irq] = handler;
 }
 
 void irq_uninstall_handler(int32_t irq) {
-    irq_routines[irq] = 0;
+    irq_routines[irq] = nullptr;
 }
 
-void irq_remap() {
+void irq_remap(void) {
     outportb(0x20, 0x11);
     outportb(0xA0, 0x11);
     outportb(0x21, 0x20);

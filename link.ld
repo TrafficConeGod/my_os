@@ -10,6 +10,11 @@ SECTIONS
     }
     .data : AT(phys + (data - code))
     {
+        start_ctors = .;
+        KEEP(*( .init_array ));
+        KEEP(*(SORT_BY_INIT_PRIORITY( .init_array.* )));
+        end_ctors = .;
+
         data = .;
         *(.data)
         . = ALIGN(4096);

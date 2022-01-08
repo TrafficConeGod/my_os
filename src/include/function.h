@@ -10,6 +10,7 @@ class function<Return(Args...)> {
         function(Return (*_ptr)(Args...)) : ptr(_ptr) {}
         function(void* _ptr) : ptr((Return(*)(Args...))_ptr) {}
         function() : ptr(nullptr) {}
+        function(std::nullptr_t) : ptr(nullptr) {}
         inline Return operator()(Args... args) const { return ptr(args...); }
 
         inline operator bool() const { return ptr != nullptr; }

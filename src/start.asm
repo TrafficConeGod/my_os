@@ -24,6 +24,8 @@ mboot:
     dd start
 
 stublet:
+    extern call_constructors
+    call call_constructors
     extern k_main
     call k_main
     ;jmp $

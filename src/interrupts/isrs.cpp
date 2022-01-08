@@ -1,6 +1,7 @@
 #include <system.h>
 #include <cstdio>
-#include <function.h>
+#include "function.h"
+#include "array.h"
 
 extern "C" void _isr0();
 extern "C" void _isr1();
@@ -106,15 +107,16 @@ const char* exception_messages[] = {
     "Reserved",
 };
 
-void *irs_routines[32] = {
+void* irs_routines_temp[32] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 };
+array<function<void(const registers&)>, 32> irs_routines = (function<void(const registers&)>*)irs_routines_temp;
 
-void irs_install_handler(int32_t irs, void (*handler)(const registers& r)) {
-    irs_routines[irs] = (void*)handler;
+void irs_install_handler(int32_t irs, function<void(const registers&)> handler) {
+    irs_routines[irs] = handler;
 }
 
 extern "C" void fault_handler(const registers& r) {

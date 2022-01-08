@@ -1,4 +1,5 @@
 #include <system.h>
+#include "array.h"
 
 struct idt_entry {
     uint16_t base_lo;
@@ -13,7 +14,7 @@ struct idt_ptr {
     uint32_t base;
 } __attribute__ ((packed));
 
-idt_entry idt[256];
+array<idt_entry, 256> idt;
 idt_ptr idtp;
 
 extern "C" void idt_load();
