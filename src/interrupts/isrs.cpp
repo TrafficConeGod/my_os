@@ -1,5 +1,6 @@
 #include <system.h>
 #include <cstdio>
+#include <function.h>
 
 extern "C" void _isr0();
 extern "C" void _isr1();
@@ -105,32 +106,26 @@ const char* exception_messages[] = {
     "Reserved",
 };
 
-void *irs_routines[32] =
-{
+void *irs_routines[32] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void irs_install_handler(int32_t irs, void (*handler)(register_t *r))
-{
+void irs_install_handler(int32_t irs, void (*handler)(registers* r)) {
     irs_routines[irs] = (void*)handler;
 }
 
-extern "C"
-void fault_handler(register_t *r) {
-    if (r->int_no < 32)
-    {
-        void (*handler)(register_t *r);
+extern "C" void fault_handler(registers* r) {
+    if (r->int_no < 32) {
+        function<void(registers*)> handler;
 
-        handler = (void (*)(regs*))irs_routines[r->int_no];
-        if (handler)
-        {
+        handler = irs_routines[r->int_no];
+        if (handler) {
             handler(r);
         }
-        else
-        {
+        else {
             puts(exception_messages[r->int_no]);
             puts(" Exception. System Halted!\n");
             for (;;);

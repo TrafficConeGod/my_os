@@ -1,5 +1,6 @@
 #include <system.h>
 #include <basic.h>
+#include "function.h"
 
 extern "C" void _irq0();
 extern "C" void _irq1();
@@ -18,24 +19,20 @@ extern "C" void _irq13();
 extern "C" void _irq14();
 extern "C" void _irq15();
 
-void *irq_routines[16] =
-{
+void* irq_routines[16] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void irq_install_handler(int32_t irq, void (*handler)(register_t *r))
-{
+void irq_install_handler(int32_t irq, function<void(registers*)> handler) {
     irq_routines[irq] = (void*)handler;
 }
 
-void irq_uninstall_handler(int32_t irq)
-{
+void irq_uninstall_handler(int32_t irq) {
     irq_routines[irq] = 0;
 }
 
-void irq_remap(void)
-{
+void irq_remap(void) {
     outportb(0x20, 0x11);
     outportb(0xA0, 0x11);
     outportb(0x21, 0x20);
@@ -48,8 +45,7 @@ void irq_remap(void)
     outportb(0xA1, 0x0);
 }
 
-void irq_install()
-{
+void irq_install() {
     irq_remap();
 
     idt_set_gate(32, (unsigned)_irq0, 0x08, 0x8E);
@@ -70,17 +66,15 @@ void irq_install()
     idt_set_gate(47, (unsigned)_irq15, 0x08, 0x8E);
 }
 
-extern "C" void irq_handler(register_t *r) {
-    void (*handler)(register_t *r);
+extern "C" void irq_handler(registers* r) {
+    function<void(registers*)> handler;
 
-    handler = (void (*)(regs*))irq_routines[r->int_no - 32];
-    if (handler)
-    {
+    handler = irq_routines[r->int_no - 32];
+    if (handler) {
         handler(r);
     }
 
-    if (r->int_no >= 40)
-    {
+    if (r->int_no >= 40) {
         outportb(0xA0, 0x20);
     }
 

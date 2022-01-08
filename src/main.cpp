@@ -2,8 +2,7 @@
 #include <cstdio>
 #include <cstring>
 
-extern "C"
-void k_main() {
+extern "C" void k_main() {
     gdt_install();
     idt_install();
     isrs_install();
@@ -12,7 +11,7 @@ void k_main() {
     keyboard_install();
 
     __asm__ __volatile__("sti");
-    puts("System Start!\n");
+    std::puts("System Start!\n");
 
     for(;;);
 }

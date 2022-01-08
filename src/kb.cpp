@@ -41,8 +41,7 @@ uint8_t kbdus[128] = {
     0,	/* All other keys are undefined */
 };
 
-void keyboard_handler(register_t *r)
-{
+void keyboard_handler(registers* r) {
     uint8_t scancode;
 
     scancode = inportb(0x60);
@@ -58,7 +57,6 @@ void keyboard_handler(register_t *r)
     
 }
 
-void keyboard_install(void)
-{
+void keyboard_install(void) {
     irq_install_handler(1, keyboard_handler);
 }
