@@ -3,10 +3,11 @@
 #include <cstdint>
 #include <cstddef>
 #include "basic.h"
+#include "array.h"
 
 FILE* stdout = nullptr; // i love the c++ version of the c standard library
 
-uint16_t* frame_buffer = (uint16_t*)0xb8000;
+reference_array<uint16_t, 80 * 25> frame_buffer = (uint16_t*)0xb8000;
 const size_t frame_buffer_width = 80;
 const size_t frame_buffer_height = 25;
 const size_t frame_buffer_size = frame_buffer_width * frame_buffer_height;

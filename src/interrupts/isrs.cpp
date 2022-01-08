@@ -2,6 +2,7 @@
 #include <cstdio>
 #include "function.h"
 #include "array.h"
+#include "exception.h"
 
 extern "C" void _isr0();
 extern "C" void _isr1();
@@ -71,7 +72,7 @@ void isrs_install() {
     idt_set_gate(31, (unsigned)_isr31, 0x08, 0x8E);
 }
 
-const char* exception_messages[] = {
+const char* exception_messages_temp[] = {
     "Division By Zero",
     "Debug",
     "Non Maskable Interrupt",
@@ -106,6 +107,7 @@ const char* exception_messages[] = {
     "Reserved",
     "Reserved",
 };
+reference_array<const char*, 33> exception_messages = exception_messages_temp;
 
 void* irs_routines_temp[32] = {
     0, 0, 0, 0, 0, 0, 0, 0,
@@ -113,7 +115,7 @@ void* irs_routines_temp[32] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 };
-array<function<void(const registers&)>, 32> irs_routines = (function<void(const registers&)>*)irs_routines_temp;
+reference_array<function<void(const registers&)>, 32> irs_routines = (function<void(const registers&)>*)irs_routines_temp;
 
 void irs_install_handler(int32_t irs, function<void(const registers&)> handler) {
     irs_routines[irs] = handler;
@@ -128,9 +130,7 @@ extern "C" void fault_handler(const registers& r) {
             handler(r);
         }
         else {
-            puts(exception_messages[r.int_no]);
-            puts(" Exception. System Halted!\n");
-            for (;;);
+            throw_exception(exception_messages[r.int_no]);
         }
     }
 }

@@ -1,5 +1,6 @@
 #include <system.h>
 #include "array.h"
+#include <cstring>
 
 struct idt_entry {
     uint16_t base_lo;
@@ -26,16 +27,6 @@ void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags) {
     idt[num].sel = sel;
     idt[num].flags = flags;
 }
-
-void* memset(void *s, int c,  unsigned int len) {
-    unsigned char* p = (uint8_t*)s;
-    while(len--)
-    {
-        *p++ = (unsigned char)c;
-    }
-    return s;
-}
-
 
 void idt_install() {
     idtp.limit = (sizeof(idt_entry) * 256) - 1;

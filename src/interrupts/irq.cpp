@@ -24,7 +24,7 @@ void* irq_routines_temp[16] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 };
-array<function<void(const registers&)>, 16> irq_routines = (function<void(const registers&)>*)irq_routines_temp;
+reference_array<function<void(const registers&)>, 16> irq_routines = (function<void(const registers&)>*)irq_routines_temp;
 
 void irq_install_handler(int32_t irq, function<void(const registers&)> handler) {
     irq_routines[irq] = handler;

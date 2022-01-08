@@ -41,7 +41,7 @@ uint8_t keycode_map_temp[128] = {
     0,	/* F12 Key */
     0,	/* All other keys are undefined */
 };
-array<uint8_t, 128> keycode_map = keycode_map_temp;
+reference_array<uint8_t, 128> keycode_map = keycode_map_temp;
 
 void keyboard_handler(const registers& r) {
     uint8_t scancode;

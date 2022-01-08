@@ -2,13 +2,15 @@
 #include <cstdio>
 #include <cstring>
 #include "array.h"
+#include "function.h"
 
-typedef void (*constructor)();
+using constructor = function<void()>;
 extern "C" constructor start_ctors;
 extern "C" constructor end_ctors;
 extern "C" void call_constructors() {
-    for(constructor* i = &start_ctors; i != &end_ctors; i++)
+    for (constructor* i = &start_ctors; i != &end_ctors; i++) {
         (*i)();
+    }
 }
 
 extern "C" void k_main() {
