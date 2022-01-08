@@ -107,7 +107,7 @@ const char* exception_messages_temp[] = {
     "Reserved",
     "Reserved",
 };
-reference_array<const char*, 33> exception_messages = exception_messages_temp;
+unowned_array<const char*, 33> exception_messages = exception_messages_temp;
 
 void* irs_routines_temp[32] = {
     0, 0, 0, 0, 0, 0, 0, 0,
@@ -115,7 +115,7 @@ void* irs_routines_temp[32] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 };
-reference_array<function<void(const registers&)>, 32> irs_routines = (function<void(const registers&)>*)irs_routines_temp;
+unowned_array<function<void(const registers&)>, 32> irs_routines = (function<void(const registers&)>*)irs_routines_temp;
 
 void irs_install_handler(int32_t irs, function<void(const registers&)> handler) {
     irs_routines[irs] = handler;

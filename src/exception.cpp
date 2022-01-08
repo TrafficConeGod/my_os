@@ -4,7 +4,7 @@
 #include "array.h"
 
 std::size_t exception_level = 0;
-reference_array<uint16_t, 80 * 25> exception_frame_buffer = (uint16_t*)0xb8000;
+unowned_array<uint16_t, 80 * 25> exception_frame_buffer = (uint16_t*)0xb8000;
 
 void throw_exception(const char* message) {
     if (exception_level >= 3) {

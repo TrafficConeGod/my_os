@@ -86,10 +86,10 @@ class array {
 };
 
 template<typename T, std::size_t _size>
-class reference_array {
+class unowned_array {
     T* data;
     public:
-        reference_array(T* _data) : data(_data) {}
+        unowned_array(T* _data) : data(_data) {}
 
         inline std::size_t size() const { return _size; }
 
@@ -109,10 +109,10 @@ class reference_array {
         
         class iterator {
             private:
-                reference_array& array_ref;
+                unowned_array& array_ref;
                 size_t index;
             public:
-                iterator(reference_array& _array, size_t _index) : array_ref(_array), index(_index) {}
+                iterator(unowned_array& _array, size_t _index) : array_ref(_array), index(_index) {}
 
                 inline iterator& operator++() {
                     index++;
@@ -130,10 +130,10 @@ class reference_array {
         
         class const_iterator {
             private:
-                const reference_array& array_ref;
+                const unowned_array& array_ref;
                 size_t index;
             public:
-                const_iterator(const reference_array& _array, size_t _index) : array_ref(_array), index(_index) {}
+                const_iterator(const unowned_array& _array, size_t _index) : array_ref(_array), index(_index) {}
 
                 inline const_iterator& operator++() {
                     index++;

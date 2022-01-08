@@ -7,7 +7,7 @@
 
 FILE* stdout = nullptr; // i love the c++ version of the c standard library
 
-reference_array<uint16_t, 80 * 25> frame_buffer = (uint16_t*)0xb8000;
+unowned_array<uint16_t, 80 * 25> frame_buffer = (uint16_t*)0xb8000;
 const size_t frame_buffer_width = 80;
 const size_t frame_buffer_height = 25;
 const size_t frame_buffer_size = frame_buffer_width * frame_buffer_height;
