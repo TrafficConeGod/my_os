@@ -106,4 +106,12 @@ int printf(const char* fmt, ...) {
     return 0;
 }
 
-void io_main() {}
+int __printf_chk(int, const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    printf(fmt, args);
+
+    va_end(args);
+    return 0;
+}

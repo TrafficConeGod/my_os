@@ -1,6 +1,7 @@
 #include "include/system.h"
 #include <cstdio>
 #include <cstring>
+#include "array.h"
 
 extern "C" void k_main() {
     gdt_install();

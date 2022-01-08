@@ -57,6 +57,6 @@ void keyboard_handler(const registers& r) {
     
 }
 
-void keyboard_install(void) {
+void keyboard_install() {
     irq_install_handler(1, keyboard_handler);
 }

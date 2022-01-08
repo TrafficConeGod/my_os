@@ -4,8 +4,3 @@
 
 uint8_t inportb(uint16_t port);
 void outportb(uint16_t port, uint8_t data);
-
-template<typename T>
-struct buffer {
-
-};
