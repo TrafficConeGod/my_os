@@ -2,5 +2,7 @@
 #include <cstdint>
 #include <cstring>
 
-uint8_t inportb(uint16_t port);
-void outportb(uint16_t port, uint8_t data);
+namespace port {
+    uint8_t get_byte(uint16_t port);
+    void put_byte(uint16_t port, uint8_t value);
+}

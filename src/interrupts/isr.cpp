@@ -5,7 +5,7 @@
 #include "exception.h"
 
 #define MAKE_ISR(id) extern "C" void _isr##id();
-#define SET_ISR_GATE(id) idt_set_gate(id, (unsigned)_isr##id, 0x08, 0x8E);
+#define SET_GATE(id) idt::set_gate(id, (unsigned)_isr##id, 0x08, 0x8E);
 
 MAKE_ISR(0)
 MAKE_ISR(1)
@@ -264,338 +264,346 @@ MAKE_ISR(253)
 MAKE_ISR(254)
 MAKE_ISR(255)
 
-array<function<void(const registers&)>, 256> isr_handlers;
+namespace isr {
+    array<function<void(const registers&)>, 256> handlers;
 
-void irq_remap() {
-    outportb(0x20, 0x11);
-    outportb(0xA0, 0x11);
-    outportb(0x21, 0x20);
-    outportb(0xA1, 0x28);
-    outportb(0x21, 0x04);
-    outportb(0xA1, 0x02);
-    outportb(0x21, 0x01);
-    outportb(0xA1, 0x01);
-    outportb(0x21, 0x0);
-    outportb(0xA1, 0x0);
-}
-
-void isr_main() {
-    SET_ISR_GATE(0)
-    SET_ISR_GATE(1)
-    SET_ISR_GATE(2)
-    SET_ISR_GATE(3)
-    SET_ISR_GATE(4)
-    SET_ISR_GATE(5)
-    SET_ISR_GATE(6)
-    SET_ISR_GATE(7)
-    SET_ISR_GATE(8)
-    SET_ISR_GATE(9)
-    SET_ISR_GATE(10)
-    SET_ISR_GATE(11)
-    SET_ISR_GATE(12)
-    SET_ISR_GATE(13)
-    SET_ISR_GATE(14)
-    SET_ISR_GATE(15)
-    SET_ISR_GATE(16)
-    SET_ISR_GATE(17)
-    SET_ISR_GATE(18)
-    SET_ISR_GATE(19)
-    SET_ISR_GATE(20)
-    SET_ISR_GATE(21)
-    SET_ISR_GATE(22)
-    SET_ISR_GATE(23)
-    SET_ISR_GATE(24)
-    SET_ISR_GATE(25)
-    SET_ISR_GATE(26)
-    SET_ISR_GATE(27)
-    SET_ISR_GATE(28)
-    SET_ISR_GATE(29)
-    SET_ISR_GATE(30)
-    SET_ISR_GATE(31)
-    irq_remap();
-    SET_ISR_GATE(32)
-    SET_ISR_GATE(33)
-    SET_ISR_GATE(34)
-    SET_ISR_GATE(35)
-    SET_ISR_GATE(36)
-    SET_ISR_GATE(37)
-    SET_ISR_GATE(38)
-    SET_ISR_GATE(39)
-    SET_ISR_GATE(40)
-    SET_ISR_GATE(41)
-    SET_ISR_GATE(42)
-    SET_ISR_GATE(43)
-    SET_ISR_GATE(44)
-    SET_ISR_GATE(45)
-    SET_ISR_GATE(46)
-    SET_ISR_GATE(47)
-    // SET_ISR_GATE(48)
-    // SET_ISR_GATE(49)
-    // SET_ISR_GATE(50)
-    // SET_ISR_GATE(51)
-    // SET_ISR_GATE(52)
-    // SET_ISR_GATE(53)
-    // SET_ISR_GATE(54)
-    // SET_ISR_GATE(55)
-    // SET_ISR_GATE(56)
-    // SET_ISR_GATE(57)
-    // SET_ISR_GATE(58)
-    // SET_ISR_GATE(59)
-    // SET_ISR_GATE(60)
-    // SET_ISR_GATE(61)
-    // SET_ISR_GATE(62)
-    // SET_ISR_GATE(63)
-    // SET_ISR_GATE(64)
-    // SET_ISR_GATE(65)
-    // SET_ISR_GATE(66)
-    // SET_ISR_GATE(67)
-    // SET_ISR_GATE(68)
-    // SET_ISR_GATE(69)
-    // SET_ISR_GATE(70)
-    // SET_ISR_GATE(71)
-    // SET_ISR_GATE(72)
-    // SET_ISR_GATE(73)
-    // SET_ISR_GATE(74)
-    // SET_ISR_GATE(75)
-    // SET_ISR_GATE(76)
-    // SET_ISR_GATE(77)
-    // SET_ISR_GATE(78)
-    // SET_ISR_GATE(79)
-    // SET_ISR_GATE(80)
-    // SET_ISR_GATE(81)
-    // SET_ISR_GATE(82)
-    // SET_ISR_GATE(83)
-    // SET_ISR_GATE(84)
-    // SET_ISR_GATE(85)
-    // SET_ISR_GATE(86)
-    // SET_ISR_GATE(87)
-    // SET_ISR_GATE(88)
-    // SET_ISR_GATE(89)
-    // SET_ISR_GATE(90)
-    // SET_ISR_GATE(91)
-    // SET_ISR_GATE(92)
-    // SET_ISR_GATE(93)
-    // SET_ISR_GATE(94)
-    // SET_ISR_GATE(95)
-    // SET_ISR_GATE(96)
-    // SET_ISR_GATE(97)
-    // SET_ISR_GATE(98)
-    // SET_ISR_GATE(99)
-    // SET_ISR_GATE(100)
-    // SET_ISR_GATE(101)
-    // SET_ISR_GATE(102)
-    // SET_ISR_GATE(103)
-    // SET_ISR_GATE(104)
-    // SET_ISR_GATE(105)
-    // SET_ISR_GATE(106)
-    // SET_ISR_GATE(107)
-    // SET_ISR_GATE(108)
-    // SET_ISR_GATE(109)
-    // SET_ISR_GATE(110)
-    // SET_ISR_GATE(111)
-    // SET_ISR_GATE(112)
-    // SET_ISR_GATE(113)
-    // SET_ISR_GATE(114)
-    // SET_ISR_GATE(115)
-    // SET_ISR_GATE(116)
-    // SET_ISR_GATE(117)
-    // SET_ISR_GATE(118)
-    // SET_ISR_GATE(119)
-    // SET_ISR_GATE(120)
-    // SET_ISR_GATE(121)
-    // SET_ISR_GATE(122)
-    // SET_ISR_GATE(123)
-    // SET_ISR_GATE(124)
-    // SET_ISR_GATE(125)
-    // SET_ISR_GATE(126)
-    // SET_ISR_GATE(127)
-    // SET_ISR_GATE(128)
-    // SET_ISR_GATE(129)
-    // SET_ISR_GATE(130)
-    // SET_ISR_GATE(131)
-    // SET_ISR_GATE(132)
-    // SET_ISR_GATE(133)
-    // SET_ISR_GATE(134)
-    // SET_ISR_GATE(135)
-    // SET_ISR_GATE(136)
-    // SET_ISR_GATE(137)
-    // SET_ISR_GATE(138)
-    // SET_ISR_GATE(139)
-    // SET_ISR_GATE(140)
-    // SET_ISR_GATE(141)
-    // SET_ISR_GATE(142)
-    // SET_ISR_GATE(143)
-    // SET_ISR_GATE(144)
-    // SET_ISR_GATE(145)
-    // SET_ISR_GATE(146)
-    // SET_ISR_GATE(147)
-    // SET_ISR_GATE(148)
-    // SET_ISR_GATE(149)
-    // SET_ISR_GATE(150)
-    // SET_ISR_GATE(151)
-    // SET_ISR_GATE(152)
-    // SET_ISR_GATE(153)
-    // SET_ISR_GATE(154)
-    // SET_ISR_GATE(155)
-    // SET_ISR_GATE(156)
-    // SET_ISR_GATE(157)
-    // SET_ISR_GATE(158)
-    // SET_ISR_GATE(159)
-    // SET_ISR_GATE(160)
-    // SET_ISR_GATE(161)
-    // SET_ISR_GATE(162)
-    // SET_ISR_GATE(163)
-    // SET_ISR_GATE(164)
-    // SET_ISR_GATE(165)
-    // SET_ISR_GATE(166)
-    // SET_ISR_GATE(167)
-    // SET_ISR_GATE(168)
-    // SET_ISR_GATE(169)
-    // SET_ISR_GATE(170)
-    // SET_ISR_GATE(171)
-    // SET_ISR_GATE(172)
-    // SET_ISR_GATE(173)
-    // SET_ISR_GATE(174)
-    // SET_ISR_GATE(175)
-    // SET_ISR_GATE(176)
-    // SET_ISR_GATE(177)
-    // SET_ISR_GATE(178)
-    // SET_ISR_GATE(179)
-    // SET_ISR_GATE(180)
-    // SET_ISR_GATE(181)
-    // SET_ISR_GATE(182)
-    // SET_ISR_GATE(183)
-    // SET_ISR_GATE(184)
-    // SET_ISR_GATE(185)
-    // SET_ISR_GATE(186)
-    // SET_ISR_GATE(187)
-    // SET_ISR_GATE(188)
-    // SET_ISR_GATE(189)
-    // SET_ISR_GATE(190)
-    // SET_ISR_GATE(191)
-    // SET_ISR_GATE(192)
-    // SET_ISR_GATE(193)
-    // SET_ISR_GATE(194)
-    // SET_ISR_GATE(195)
-    // SET_ISR_GATE(196)
-    // SET_ISR_GATE(197)
-    // SET_ISR_GATE(198)
-    // SET_ISR_GATE(199)
-    // SET_ISR_GATE(200)
-    // SET_ISR_GATE(201)
-    // SET_ISR_GATE(202)
-    // SET_ISR_GATE(203)
-    // SET_ISR_GATE(204)
-    // SET_ISR_GATE(205)
-    // SET_ISR_GATE(206)
-    // SET_ISR_GATE(207)
-    // SET_ISR_GATE(208)
-    // SET_ISR_GATE(209)
-    // SET_ISR_GATE(210)
-    // SET_ISR_GATE(211)
-    // SET_ISR_GATE(212)
-    // SET_ISR_GATE(213)
-    // SET_ISR_GATE(214)
-    // SET_ISR_GATE(215)
-    // SET_ISR_GATE(216)
-    // SET_ISR_GATE(217)
-    // SET_ISR_GATE(218)
-    // SET_ISR_GATE(219)
-    // SET_ISR_GATE(220)
-    // SET_ISR_GATE(221)
-    // SET_ISR_GATE(222)
-    // SET_ISR_GATE(223)
-    // SET_ISR_GATE(224)
-    // SET_ISR_GATE(225)
-    // SET_ISR_GATE(226)
-    // SET_ISR_GATE(227)
-    // SET_ISR_GATE(228)
-    // SET_ISR_GATE(229)
-    // SET_ISR_GATE(230)
-    // SET_ISR_GATE(231)
-    // SET_ISR_GATE(232)
-    // SET_ISR_GATE(233)
-    // SET_ISR_GATE(234)
-    // SET_ISR_GATE(235)
-    // SET_ISR_GATE(236)
-    // SET_ISR_GATE(237)
-    // SET_ISR_GATE(238)
-    // SET_ISR_GATE(239)
-    // SET_ISR_GATE(240)
-    // SET_ISR_GATE(241)
-    // SET_ISR_GATE(242)
-    // SET_ISR_GATE(243)
-    // SET_ISR_GATE(244)
-    // SET_ISR_GATE(245)
-    // SET_ISR_GATE(246)
-    // SET_ISR_GATE(247)
-    // SET_ISR_GATE(248)
-    // SET_ISR_GATE(249)
-    // SET_ISR_GATE(250)
-    // SET_ISR_GATE(251)
-    // SET_ISR_GATE(252)
-    // SET_ISR_GATE(253)
-    // SET_ISR_GATE(254)
-    // SET_ISR_GATE(255)
-    for (auto& function : isr_handlers) {
-        function = nullptr;
+    void remap() {
+        port::put_byte(0x20, 0x11);
+        port::put_byte(0xA0, 0x11);
+        port::put_byte(0x21, 0x20);
+        port::put_byte(0xA1, 0x28);
+        port::put_byte(0x21, 0x04);
+        port::put_byte(0xA1, 0x02);
+        port::put_byte(0x21, 0x01);
+        port::put_byte(0xA1, 0x01);
+        port::put_byte(0x21, 0x0);
+        port::put_byte(0xA1, 0x0);
     }
+
+    void main() {
+        SET_GATE(0)
+        SET_GATE(1)
+        SET_GATE(2)
+        SET_GATE(3)
+        SET_GATE(4)
+        SET_GATE(5)
+        SET_GATE(6)
+        SET_GATE(7)
+        SET_GATE(8)
+        SET_GATE(9)
+        SET_GATE(10)
+        SET_GATE(11)
+        SET_GATE(12)
+        SET_GATE(13)
+        SET_GATE(14)
+        SET_GATE(15)
+        SET_GATE(16)
+        SET_GATE(17)
+        SET_GATE(18)
+        SET_GATE(19)
+        SET_GATE(20)
+        SET_GATE(21)
+        SET_GATE(22)
+        SET_GATE(23)
+        SET_GATE(24)
+        SET_GATE(25)
+        SET_GATE(26)
+        SET_GATE(27)
+        SET_GATE(28)
+        SET_GATE(29)
+        SET_GATE(30)
+        SET_GATE(31)
+        remap();
+        SET_GATE(32)
+        SET_GATE(33)
+        SET_GATE(34)
+        SET_GATE(35)
+        SET_GATE(36)
+        SET_GATE(37)
+        SET_GATE(38)
+        SET_GATE(39)
+        SET_GATE(40)
+        SET_GATE(41)
+        SET_GATE(42)
+        SET_GATE(43)
+        SET_GATE(44)
+        SET_GATE(45)
+        SET_GATE(46)
+        SET_GATE(47)
+        // SET_GATE(48)
+        // SET_GATE(49)
+        // SET_GATE(50)
+        // SET_GATE(51)
+        // SET_GATE(52)
+        // SET_GATE(53)
+        // SET_GATE(54)
+        // SET_GATE(55)
+        // SET_GATE(56)
+        // SET_GATE(57)
+        // SET_GATE(58)
+        // SET_GATE(59)
+        // SET_GATE(60)
+        // SET_GATE(61)
+        // SET_GATE(62)
+        // SET_GATE(63)
+        // SET_GATE(64)
+        // SET_GATE(65)
+        // SET_GATE(66)
+        // SET_GATE(67)
+        // SET_GATE(68)
+        // SET_GATE(69)
+        // SET_GATE(70)
+        // SET_GATE(71)
+        // SET_GATE(72)
+        // SET_GATE(73)
+        // SET_GATE(74)
+        // SET_GATE(75)
+        // SET_GATE(76)
+        // SET_GATE(77)
+        // SET_GATE(78)
+        // SET_GATE(79)
+        // SET_GATE(80)
+        // SET_GATE(81)
+        // SET_GATE(82)
+        // SET_GATE(83)
+        // SET_GATE(84)
+        // SET_GATE(85)
+        // SET_GATE(86)
+        // SET_GATE(87)
+        // SET_GATE(88)
+        // SET_GATE(89)
+        // SET_GATE(90)
+        // SET_GATE(91)
+        // SET_GATE(92)
+        // SET_GATE(93)
+        // SET_GATE(94)
+        // SET_GATE(95)
+        // SET_GATE(96)
+        // SET_GATE(97)
+        // SET_GATE(98)
+        // SET_GATE(99)
+        // SET_GATE(100)
+        // SET_GATE(101)
+        // SET_GATE(102)
+        // SET_GATE(103)
+        // SET_GATE(104)
+        // SET_GATE(105)
+        // SET_GATE(106)
+        // SET_GATE(107)
+        // SET_GATE(108)
+        // SET_GATE(109)
+        // SET_GATE(110)
+        // SET_GATE(111)
+        // SET_GATE(112)
+        // SET_GATE(113)
+        // SET_GATE(114)
+        // SET_GATE(115)
+        // SET_GATE(116)
+        // SET_GATE(117)
+        // SET_GATE(118)
+        // SET_GATE(119)
+        // SET_GATE(120)
+        // SET_GATE(121)
+        // SET_GATE(122)
+        // SET_GATE(123)
+        // SET_GATE(124)
+        // SET_GATE(125)
+        // SET_GATE(126)
+        // SET_GATE(127)
+        // SET_GATE(128)
+        // SET_GATE(129)
+        // SET_GATE(130)
+        // SET_GATE(131)
+        // SET_GATE(132)
+        // SET_GATE(133)
+        // SET_GATE(134)
+        // SET_GATE(135)
+        // SET_GATE(136)
+        // SET_GATE(137)
+        // SET_GATE(138)
+        // SET_GATE(139)
+        // SET_GATE(140)
+        // SET_GATE(141)
+        // SET_GATE(142)
+        // SET_GATE(143)
+        // SET_GATE(144)
+        // SET_GATE(145)
+        // SET_GATE(146)
+        // SET_GATE(147)
+        // SET_GATE(148)
+        // SET_GATE(149)
+        // SET_GATE(150)
+        // SET_GATE(151)
+        // SET_GATE(152)
+        // SET_GATE(153)
+        // SET_GATE(154)
+        // SET_GATE(155)
+        // SET_GATE(156)
+        // SET_GATE(157)
+        // SET_GATE(158)
+        // SET_GATE(159)
+        // SET_GATE(160)
+        // SET_GATE(161)
+        // SET_GATE(162)
+        // SET_GATE(163)
+        // SET_GATE(164)
+        // SET_GATE(165)
+        // SET_GATE(166)
+        // SET_GATE(167)
+        // SET_GATE(168)
+        // SET_GATE(169)
+        // SET_GATE(170)
+        // SET_GATE(171)
+        // SET_GATE(172)
+        // SET_GATE(173)
+        // SET_GATE(174)
+        // SET_GATE(175)
+        // SET_GATE(176)
+        // SET_GATE(177)
+        // SET_GATE(178)
+        // SET_GATE(179)
+        // SET_GATE(180)
+        // SET_GATE(181)
+        // SET_GATE(182)
+        // SET_GATE(183)
+        // SET_GATE(184)
+        // SET_GATE(185)
+        // SET_GATE(186)
+        // SET_GATE(187)
+        // SET_GATE(188)
+        // SET_GATE(189)
+        // SET_GATE(190)
+        // SET_GATE(191)
+        // SET_GATE(192)
+        // SET_GATE(193)
+        // SET_GATE(194)
+        // SET_GATE(195)
+        // SET_GATE(196)
+        // SET_GATE(197)
+        // SET_GATE(198)
+        // SET_GATE(199)
+        // SET_GATE(200)
+        // SET_GATE(201)
+        // SET_GATE(202)
+        // SET_GATE(203)
+        // SET_GATE(204)
+        // SET_GATE(205)
+        // SET_GATE(206)
+        // SET_GATE(207)
+        // SET_GATE(208)
+        // SET_GATE(209)
+        // SET_GATE(210)
+        // SET_GATE(211)
+        // SET_GATE(212)
+        // SET_GATE(213)
+        // SET_GATE(214)
+        // SET_GATE(215)
+        // SET_GATE(216)
+        // SET_GATE(217)
+        // SET_GATE(218)
+        // SET_GATE(219)
+        // SET_GATE(220)
+        // SET_GATE(221)
+        // SET_GATE(222)
+        // SET_GATE(223)
+        // SET_GATE(224)
+        // SET_GATE(225)
+        // SET_GATE(226)
+        // SET_GATE(227)
+        // SET_GATE(228)
+        // SET_GATE(229)
+        // SET_GATE(230)
+        // SET_GATE(231)
+        // SET_GATE(232)
+        // SET_GATE(233)
+        // SET_GATE(234)
+        // SET_GATE(235)
+        // SET_GATE(236)
+        // SET_GATE(237)
+        // SET_GATE(238)
+        // SET_GATE(239)
+        // SET_GATE(240)
+        // SET_GATE(241)
+        // SET_GATE(242)
+        // SET_GATE(243)
+        // SET_GATE(244)
+        // SET_GATE(245)
+        // SET_GATE(246)
+        // SET_GATE(247)
+        // SET_GATE(248)
+        // SET_GATE(249)
+        // SET_GATE(250)
+        // SET_GATE(251)
+        // SET_GATE(252)
+        // SET_GATE(253)
+        // SET_GATE(254)
+        // SET_GATE(255)
+        for (auto& function : handlers) {
+            function = nullptr;
+        }
+    }
+
+    void set_handler(uint32_t interrupt_id, function<void(const registers&)> handler) {
+        handlers[interrupt_id] = handler;
+    }
+
+    void remove_handler(uint32_t interrupt_id) {
+        handlers[interrupt_id] = nullptr;
+    }
+
+    const char* exception_messages_temp[] = {
+        "Division By Zero",
+        "Debug",
+        "Non Maskable Interrupt",
+        "Breakpoint",
+        "Into Detected Overflow",
+        "Out of Bounds",
+        "Invalid Opcode",
+        "No Corprocessor",
+        "Double Fault",
+        "Coprocessor Segment Overrun",
+        "Bad TSS",
+        "Segment Not Present",
+        "Stack Fault Exception",
+        "General Protection Fault",
+        "Page Fault",
+        "Unknown Interrupt",
+        "Coprocessor Fault",
+        "Alignment Check",
+        "Machine Check",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+    };
+    unowned_array<const char*, 33> exception_messages = exception_messages_temp;
 }
 
-void add_interrupt_handler(uint32_t interrupt_id, function<void(const registers&)> handler) {
-    isr_handlers[interrupt_id] = handler;
-}
-
-const char* exception_messages_temp[] = {
-    "Division By Zero",
-    "Debug",
-    "Non Maskable Interrupt",
-    "Breakpoint",
-    "Into Detected Overflow",
-    "Out of Bounds",
-    "Invalid Opcode",
-    "No Corprocessor",
-    "Double Fault",
-    "Coprocessor Segment Overrun",
-    "Bad TSS",
-    "Segment Not Present",
-    "Stack Fault Exception",
-    "General Protection Fault",
-    "Page Fault",
-    "Unknown Interrupt",
-    "Coprocessor Fault",
-    "Alignment Check",
-    "Machine Check",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-};
-
+using namespace isr;
 extern "C" void isr_handler(const registers& regs) {
-    function<void(const registers&)> handler = isr_handlers[regs.int_no];
+    function<void(const registers&)> handler = handlers[regs.int_no];
     if (handler) {
         handler(regs);
     } else if (regs.int_no < 32) {
-        puts(exception_messages_temp[regs.int_no]);
+        puts(exception_messages[regs.int_no]);
         for (;;);
     }
     
     if (regs.int_no >= 32 && regs.int_no < 48) {
         if (regs.int_no >= 40) {
-            outportb(0xA0, 0x20);
+            port::put_byte(0xA0, 0x20);
         }
 
-        outportb(0x20, 0x20);
+        port::put_byte(0x20, 0x20);
     }
 }

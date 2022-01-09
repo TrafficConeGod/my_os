@@ -14,10 +14,10 @@ const size_t frame_buffer_size = frame_buffer_width * frame_buffer_height;
 size_t frame_buffer_position = 0;
 
 void move_csr() {
-    outportb(0x3D4, 14);
-    outportb(0x3D5, frame_buffer_position >> 8);
-    outportb(0x3D4, 15);
-    outportb(0x3D5, frame_buffer_position);
+    port::put_byte(0x3D4, 14);
+    port::put_byte(0x3D5, frame_buffer_position >> 8);
+    port::put_byte(0x3D4, 15);
+    port::put_byte(0x3D5, frame_buffer_position);
 }
 
 int putchar(int ch) {

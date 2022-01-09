@@ -3,59 +3,61 @@
 #include <cstdio>
 #include "array.h"
 
-uint8_t keycode_map_temp[128] = {
-    0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
-    '9', '0', '-', '=', '\b',	/* Backspace */
-    '\t',			/* Tab */
-    'q', 'w', 'e', 'r',	/* 19 */
-    't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
-    0,			/* 29   - Control */
-    'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
-    '\'', '`',   0,		/* Left shift */
-    '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
-    'm', ',', '.', '/',   0,				/* Right shift */
-    '*',
-    0,	/* Alt */
-    ' ',	/* Space bar */
-    0,	/* Caps lock */
-    0,	/* 59 - F1 key ... > */
-    0,   0,   0,   0,   0,   0,   0,   0,
-    0,	/* < ... F10 */
-    0,	/* 69 - Num lock*/
-    0,	/* Scroll Lock */
-    0,	/* Home key */
-    0,	/* Up Arrow */
-    0,	/* Page Up */
-    '-',
-    0,	/* Left Arrow */
-    0,
-    0,	/* Right Arrow */
-    '+',
-    0,	/* 79 - End key*/
-    0,	/* Down Arrow */
-    0,	/* Page Down */
-    0,	/* Insert Key */
-    0,	/* Delete Key */
-    0,   0,   0,
-    0,	/* F11 Key */
-    0,	/* F12 Key */
-    0,	/* All other keys are undefined */
-};
-unowned_array<uint8_t, 128> keycode_map = keycode_map_temp;
+namespace keyboard {
+    uint8_t keycode_map_temp[128] = {
+        0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
+        '9', '0', '-', '=', '\b',	/* Backspace */
+        '\t',			/* Tab */
+        'q', 'w', 'e', 'r',	/* 19 */
+        't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
+        0,			/* 29   - Control */
+        'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
+        '\'', '`',   0,		/* Left shift */
+        '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
+        'm', ',', '.', '/',   0,				/* Right shift */
+        '*',
+        0,	/* Alt */
+        ' ',	/* Space bar */
+        0,	/* Caps lock */
+        0,	/* 59 - F1 key ... > */
+        0,   0,   0,   0,   0,   0,   0,   0,
+        0,	/* < ... F10 */
+        0,	/* 69 - Num lock*/
+        0,	/* Scroll Lock */
+        0,	/* Home key */
+        0,	/* Up Arrow */
+        0,	/* Page Up */
+        '-',
+        0,	/* Left Arrow */
+        0,
+        0,	/* Right Arrow */
+        '+',
+        0,	/* 79 - End key*/
+        0,	/* Down Arrow */
+        0,	/* Page Down */
+        0,	/* Insert Key */
+        0,	/* Delete Key */
+        0,   0,   0,
+        0,	/* F11 Key */
+        0,	/* F12 Key */
+        0,	/* All other keys are undefined */
+    };
+    unowned_array<uint8_t, 128> keycode_map = keycode_map_temp;
 
-void keyboard_handler(const registers& r) {
-    uint8_t scancode;
-    
-    scancode = inportb(0x60);
+    void handler(const isr::registers& r) {
+        uint8_t scancode;
+        
+        scancode = port::get_byte(0x60);
 
-    if (scancode & 0x80) {
+        if (scancode & 0x80) {
 
-    } else {
-        putchar(keycode_map[scancode]);
-        // putchar(1/0);
+        } else {
+            putchar(keycode_map[scancode]);
+            // putchar(1/0);
+        }
     }
-}
 
-void keyboard_install(void) {
-    add_interrupt_handler(33, keyboard_handler);
+    void main() {
+        isr::set_handler(33, handler);
+    }
 }

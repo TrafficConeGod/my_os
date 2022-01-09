@@ -33,9 +33,9 @@ stublet:
     ;jmp $
 
 global gdt_flush
-extern gp
+extern gdt_ptr
 gdt_flush:
-    lgdt [gp]           ; Load the new GDT pointer
+    lgdt [gdt_ptr]           ; Load the new GDT pointer
     mov ax, 0x10        ; 0x10 is the offset in the GDT to the data segment
     mov ds, ax          ; Load all data segment selectors
     mov es, ax
@@ -47,9 +47,9 @@ flush2:
     ret
 
 global idt_load
-extern idtp
+extern idt_ptr
 idt_load:
-    lidt [idtp]
+    lidt [idt_ptr]
     ret
 
 %macro MAKE_ISR 1

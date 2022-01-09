@@ -15,13 +15,12 @@ extern "C" void call_constructors() {
 }
 
 extern "C" void k_main() {
-    gdt_install();
-    idt_install();
-    isr_main();
-
-    keyboard_install();
+    gdt::main();
+    idt::main();
+    isr::main();
+    keyboard::main();
 
     __asm__ __volatile__("sti");
-    puts("System Start!\n\n");
+    std::puts("System Start!\n\n");
     for (;;);
 }
