@@ -1,9 +1,9 @@
 #include "system.h"
-#include <cstdio>
+#include "debug.h"
 
 namespace syscall {
     void handler(const isr::registers& registers) {
-        puts("syscall worked\n");
+        dbg::print("Hello!");
     }
 
     void main() {

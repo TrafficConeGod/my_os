@@ -20,9 +20,13 @@ extern "C" void k_main() {
     gdt::main();
     idt::main();
     isr::main();
+    syscall::main();
     keyboard::main();
 
     __asm__ __volatile__("sti");
     dbg::print("System started successfully!\n");
+
+
+    asm volatile("int $0x80");
     for (;;);
 }

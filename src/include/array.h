@@ -22,6 +22,7 @@ class array {
 
         inline T& operator[](std::size_t index) {
             if (index >= _size) {
+                dbg::print("Index out of bounds:", index, ">=", _size);
                 throw_exception("Array index out of bounds");
             }
             return data[index];
@@ -29,6 +30,7 @@ class array {
 
         inline const T& operator[](std::size_t index) const {
             if (index >= _size) {
+                dbg::print("Index out of bounds:", index, ">=", _size);
                 throw_exception("Array index out of bounds");
             }
             return data[index];
