@@ -2,6 +2,7 @@
 #include <initializer_list>
 #include <cstdio>
 #include <cstring>
+#include "debug.h"
 #include "exception.h"
 
 template<typename T, std::size_t _size>
@@ -9,6 +10,13 @@ class array {
     T data[_size];
     public:
         array() {}
+        array(std::initializer_list<T> list) {
+            std::size_t index = 0;
+            for (const auto& elem : list) {
+                (*this)[index] = elem;
+                index++;
+            }
+        }
 
         inline std::size_t size() const { return _size; }
 

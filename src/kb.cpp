@@ -4,7 +4,7 @@
 #include "array.h"
 
 namespace keyboard {
-    uint8_t keycode_map_temp[128] = {
+    array<char, 128> keycode_map = {
         0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
         '9', '0', '-', '=', '\b',	/* Backspace */
         '\t',			/* Tab */
@@ -42,17 +42,16 @@ namespace keyboard {
         0,	/* F12 Key */
         0,	/* All other keys are undefined */
     };
-    unowned_array<uint8_t, 128> keycode_map = keycode_map_temp;
 
     void handler(const isr::registers& r) {
-        uint8_t scancode;
+        uint8_t keycode;
         
-        scancode = port::get_byte(0x60);
+        keycode = port::get_byte(0x60);
 
-        if (scancode & 0x80) {
+        if (keycode & 0x80) {
 
         } else {
-            putchar(keycode_map[scancode]);
+            putchar(keycode_map[keycode]);
             // putchar(1/0);
         }
     }

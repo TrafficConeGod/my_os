@@ -14,6 +14,8 @@ extern "C" void call_constructors() {
     }
 }
 
+array<uint32_t, 10> array_test = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
 extern "C" void k_main() {
     gdt::main();
     idt::main();
@@ -21,5 +23,6 @@ extern "C" void k_main() {
     keyboard::main();
 
     __asm__ __volatile__("sti");
+    dbg::print("System started successfully!\n");
     for (;;);
 }

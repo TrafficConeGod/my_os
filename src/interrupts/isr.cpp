@@ -551,7 +551,7 @@ namespace isr {
         handlers[interrupt_id] = nullptr;
     }
 
-    const char* exception_messages_temp[] = {
+    array<const char*, 33> exception_messages = {
         "Division By Zero",
         "Debug",
         "Non Maskable Interrupt",
@@ -586,7 +586,6 @@ namespace isr {
         "Reserved",
         "Reserved",
     };
-    unowned_array<const char*, 33> exception_messages = exception_messages_temp;
 }
 
 using namespace isr;
