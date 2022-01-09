@@ -81,38 +81,40 @@ void putnum(uint32_t num, size_t base, size_t min_digits) {
     puts_nnl(str);
 }
 
-int printf(const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
+// doesnt work :(
+    
+// int printf(const char* fmt, ...) {
+//     va_list args;
+//     va_start(args, fmt);
 
-    while (*fmt != '\0') {
-        if (*fmt != '%') {
-            if (!putchar(*fmt)) {
-                break;
-            }
-            fmt++;
-            continue;
-        }
-        fmt++;
-        switch (*fmt) {
-            case 'c': putchar(va_arg(args, int)); break;
-            case 's': puts_nnl(va_arg(args, const char*)); break;
-            case 'd': putnum(va_arg(args, uint32_t), 10, 1); break;
-            case 'x': putnum(va_arg(args, uint32_t), 16, 1); break;
-        }
-        fmt++;
-    }
+//     while (*fmt != '\0') {
+//         if (*fmt != '%') {
+//             if (!putchar(*fmt)) {
+//                 break;
+//             }
+//             fmt++;
+//             continue;
+//         }
+//         fmt++;
+//         switch (*fmt) {
+//             case 'c': putchar(va_arg(args, int)); break;
+//             case 's': puts_nnl(va_arg(args, const char*)); break;
+//             case 'd': putnum(va_arg(args, uint32_t), 10, 1); break;
+//             case 'x': putnum(va_arg(args, uint32_t), 16, 1); break;
+//         }
+//         fmt++;
+//     }
 
-    va_end(args);
-    return 0;
-}
+//     va_end(args);
+//     return 0;
+// }
 
-int __printf_chk(int, const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
+// int __printf_chk(int, const char* fmt, ...) {
+//     va_list args;
+//     va_start(args, fmt);
 
-    printf(fmt, args);
+//     printf(fmt, args);
 
-    va_end(args);
-    return 0;
-}
+//     va_end(args);
+//     return 0;
+// }

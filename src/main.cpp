@@ -1,8 +1,9 @@
 #include "include/system.h"
-#include <cstdio>
+// #include <cstdio>
 #include <cstring>
 #include "array.h"
 #include "function.h"
+
 
 using constructor = function<void()>;
 extern "C" constructor start_ctors;
@@ -16,13 +17,11 @@ extern "C" void call_constructors() {
 extern "C" void k_main() {
     gdt_install();
     idt_install();
-    isrs_install();
-    irq_install();
+    isr_main();
 
     keyboard_install();
 
     __asm__ __volatile__("sti");
-    std::puts("System Start!\n");
-
+    puts("System Start!\n\n");
     for (;;);
 }

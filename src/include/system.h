@@ -1,12 +1,15 @@
 #pragma once
 #include <cstdint>
+#include <cstddef>
 #include "function.h"
+
+void putnum(uint32_t num, std::size_t base, std::size_t min_digits);
 
 extern void move_csr();
 
 extern void gdt_install();
 extern void idt_install();
-extern void isrs_install();
+extern void isr_main();
 
 struct registers {
     uint32_t gs, fs, es, ds;
@@ -15,11 +18,7 @@ struct registers {
     uint32_t eip, cs, eflags, useresp, ss;
 };
 
-void irq_install_handler(int32_t irq, function<void(const registers&)> handler);
-void irq_uninstall_handler(int32_t irq);
-void irq_install();
-
-void irs_install_handler(int32_t irs, function<void(const registers&)> handler);
+void add_interrupt_handler(uint32_t interrupt_id, function<void(const registers&)> handler);
 
 void timer_install(uint32_t frequency);
 

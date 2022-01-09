@@ -4,6 +4,7 @@ SECTIONS
 {
     .text phys : AT(phys) {
         code = .;
+        *(.multiboot_header)
         *(.text)
         *(.rodata)
         . = ALIGN(4096);
