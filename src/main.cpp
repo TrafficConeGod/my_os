@@ -1,8 +1,8 @@
 #include "include/system.h"
-// #include <cstdio>
 #include <cstring>
 #include "array.h"
 #include "function.h"
+#include "debug.h"
 
 
 using constructor = function<void()>;
@@ -21,6 +21,5 @@ extern "C" void k_main() {
     keyboard::main();
 
     __asm__ __volatile__("sti");
-    std::puts("System Start!\n\n");
     for (;;);
 }

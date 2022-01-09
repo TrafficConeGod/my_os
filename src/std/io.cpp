@@ -46,8 +46,8 @@ int puts_nnl(const char* str) {
 }
 
 int puts(const char* str) {
-    puts_nnl(str);
-    return putchar('\n');
+    while (putchar(*str++));
+    return 1;
 }
 
 void putnum(uint32_t num, size_t base, size_t min_digits) {
