@@ -52,7 +52,7 @@ void keyboard_handler(const registers& r) {
 
     } else {
         putchar(keycode_map[scancode]);
-        putchar(1/0);
+        // putchar(1/0);
     }
 }
 

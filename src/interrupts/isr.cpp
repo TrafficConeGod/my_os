@@ -590,4 +590,12 @@ extern "C" void isr_handler(const registers& regs) {
         puts(exception_messages_temp[regs.int_no]);
         for (;;);
     }
+    
+    if (regs.int_no >= 32 && regs.int_no < 48) {
+        if (regs.int_no >= 40) {
+            outportb(0xA0, 0x20);
+        }
+
+        outportb(0x20, 0x20);
+    }
 }
