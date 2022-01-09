@@ -52,10 +52,10 @@ void keyboard_handler(const registers& r) {
 
     } else {
         putchar(keycode_map[scancode]);
-        // putchar(1/0);
+        putchar(1/0);
     }
 }
 
 void keyboard_install(void) {
-    // add_interrupt_handler(34, keyboard_handler);
+    add_interrupt_handler(33, keyboard_handler);
 }
