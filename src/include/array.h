@@ -2,12 +2,12 @@
 #include <initializer_list>
 #include <cstdio>
 #include <cstring>
-#include "debug.h"
 #include "exception.h"
+#include "debug.h"
 
-template<typename T, std::size_t _size>
+template<typename T, std::size_t size>
 class array {
-    T data[_size];
+    T data[size];
     public:
         array() {}
         array(std::initializer_list<T> list) {
@@ -18,19 +18,20 @@ class array {
             }
         }
 
-        inline std::size_t size() const { return _size; }
+        inline T* get_data() const { return data; }
+        inline std::size_t get_size() const { return size; }
 
         inline T& operator[](std::size_t index) {
-            if (index >= _size) {
-                dbg::print("Index out of bounds:", index, ">=", _size);
+            if (index >= size) {
+                dbg::print("Index out of bounds:", index, ">=", size);
                 throw_exception("Array index out of bounds");
             }
             return data[index];
         }
 
         inline const T& operator[](std::size_t index) const {
-            if (index >= _size) {
-                dbg::print("Index out of bounds:", index, ">=", _size);
+            if (index >= size) {
+                dbg::print("Index out of bounds:", index, ">=", size);
                 throw_exception("Array index out of bounds");
             }
             return data[index];
@@ -83,7 +84,7 @@ class array {
         }
 
         inline iterator end() {
-            return iterator(*this, _size);
+            return iterator(*this, size);
         }
 
         inline const const_iterator begin() const {
@@ -91,27 +92,29 @@ class array {
         }
 
         inline const const_iterator end() const {
-            return const_iterator(*this, _size);
+            return const_iterator(*this, size);
         }
 };
 
-template<typename T, std::size_t _size>
+template<typename T>
 class unowned_array {
     T* data;
+    std::size_t size;
     public:
-        unowned_array(T* _data) : data(_data) {}
+        unowned_array(T* _data, std::size_t _size) : data(_data), size(_size) {}
 
-        inline std::size_t size() const { return _size; }
+        inline T* get_data() const { return data; }
+        inline std::size_t get_size() const { return size; }
 
         inline T& operator[](std::size_t index) {
-            if (index >= _size) {
+            if (index >= size) {
                 throw_exception("Array index out of bounds");
             }
             return data[index];
         }
 
         inline const T& operator[](std::size_t index) const {
-            if (index >= _size) {
+            if (index >= size) {
                 throw_exception("Array index out of bounds");
             }
             return data[index];
@@ -164,7 +167,7 @@ class unowned_array {
         }
 
         inline iterator end() {
-            return iterator(*this, _size);
+            return iterator(*this, size);
         }
 
         inline const const_iterator begin() const {
@@ -172,6 +175,19 @@ class unowned_array {
         }
 
         inline const const_iterator end() const {
-            return const_iterator(*this, _size);
+            return const_iterator(*this, size);
+        }
+};
+
+class string : public unowned_array<char> {
+    public:
+        string() : unowned_array((char*)nullptr, 0) {}
+        string(const char* str) : unowned_array((char*)str, std::strlen(str)) {}
+
+        inline operator char*() {
+            return get_data();
+        }
+        inline operator const char*() const {
+            return get_data();
         }
 };

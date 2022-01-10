@@ -551,7 +551,7 @@ namespace isr {
         handlers[interrupt_id] = nullptr;
     }
 
-    array<const char*, 33> exception_messages = {
+    array<string, 33> exception_messages = {
         "Division By Zero",
         "Debug",
         "Non Maskable Interrupt",

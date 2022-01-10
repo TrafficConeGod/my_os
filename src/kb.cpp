@@ -52,7 +52,6 @@ namespace keyboard {
 
         } else {
             putchar(keycode_map[keycode]);
-            // putchar(1/0);
         }
     }
 

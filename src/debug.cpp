@@ -1,4 +1,5 @@
 #include "debug.h"
+#include "array.h"
 
 #define IMPLEMENT_NUMBER_WRITE(type) \
 template<> \
@@ -15,6 +16,13 @@ namespace dbg {
     template<>
     void write<const char*>(const char* val) {
         std::puts(val);
+    }
+
+    template<>
+    void write<string>(string val) {
+        for (auto ch : val) {
+            std::putchar(ch);
+        }
     }
 
     template<>
