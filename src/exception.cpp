@@ -11,7 +11,7 @@ void throw_exception(const char* message) {
         for (;;);
     }
     exception_level++;
-    dbg::print("Exception:", message);
+    dbg::print("Exception: ", message, "\n");
     for (;;) {}
 }
 

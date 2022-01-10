@@ -17,6 +17,7 @@ class unowned_array {
 
         inline T& operator[](std::size_t index) {
             if (index >= size) {
+                dbg::print("Index out of bounds:", index, ">=", size, "\n");
                 throw_exception("Array index out of bounds");
             }
             return data[index];
@@ -24,6 +25,7 @@ class unowned_array {
 
         inline const T& operator[](std::size_t index) const {
             if (index >= size) {
+                dbg::print("Index out of bounds:", index, ">=", size, "\n");
                 throw_exception("Array index out of bounds");
             }
             return data[index];
@@ -124,7 +126,7 @@ class array {
 
         inline T& operator[](std::size_t index) {
             if (index >= size) {
-                dbg::print("Index out of bounds:", index, ">=", size);
+                dbg::print("Index out of bounds:", index, ">=", size, "\n");
                 throw_exception("Array index out of bounds");
             }
             return data[index];
@@ -132,7 +134,7 @@ class array {
 
         inline const T& operator[](std::size_t index) const {
             if (index >= size) {
-                dbg::print("Index out of bounds:", index, ">=", size);
+                dbg::print("Index out of bounds:", index, ">=", size, "\n");
                 throw_exception("Array index out of bounds");
             }
             return data[index];

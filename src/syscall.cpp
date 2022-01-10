@@ -3,7 +3,7 @@
 
 namespace syscall {
     void handler(const isr::registers& registers) {
-        dbg::print("Hello!");
+        dbg::print("Hello!\n");
     }
 
     void main() {

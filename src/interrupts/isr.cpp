@@ -595,7 +595,6 @@ extern "C" void isr_handler(const registers& regs) {
         handler(regs);
     } else if (regs.int_no < 32) {
         throw_exception(exception_messages[regs.int_no]);
-        for (;;);
     }
     
     if (regs.int_no >= 32 && regs.int_no < 48) {

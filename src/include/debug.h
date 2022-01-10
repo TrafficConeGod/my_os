@@ -78,15 +78,13 @@ namespace dbg {
     inline void sub_print() {}
 
     template<typename T, typename ...Types>
-    void sub_print(T arg, Types... args) {
+    inline void sub_print(T arg, Types... args) {
         write<T>(arg);
-        write<char>(' ');
         sub_print(args...);
     }
 
     template<typename ...Types>
-    void print(Types... args) {
+    inline void print(Types... args) {
         sub_print(args...);
-        write<char>('\n');
     }
 };
