@@ -12,21 +12,20 @@ class unowned_array {
     public:
         unowned_array(T* _data, std::size_t _size) : data(_data), size(_size) {}
 
-        inline T* get_data() const { return data; }
+        inline T* get_data() { return data; }
+        inline const T* get_data() const { return data; }
         inline std::size_t get_size() const { return size; }
 
-        inline T& operator[](std::size_t index) {
+        T& operator[](std::size_t index) {
             if (index >= size) {
-                dbg::print("Index out of bounds:", index, ">=", size, "\n");
-                throw_exception("Array index out of bounds");
+                throw_index_out_of_bounds_exception(size, index);
             }
             return data[index];
         }
 
-        inline const T& operator[](std::size_t index) const {
+        const T& operator[](std::size_t index) const {
             if (index >= size) {
-                dbg::print("Index out of bounds:", index, ">=", size, "\n");
-                throw_exception("Array index out of bounds");
+                throw_index_out_of_bounds_exception(size, index);
             }
             return data[index];
         }
@@ -48,7 +47,7 @@ class unowned_array {
                 }
 
                 inline T& operator*() {
-                    return array_ref[index];
+                    return array_ref.data[index];
                 }
         };
         
@@ -69,7 +68,7 @@ class unowned_array {
                 }
 
                 inline const T& operator*() const {
-                    return array_ref[index];
+                    return array_ref.data[index];
                 }
         };
 
@@ -117,25 +116,24 @@ class array {
         }
         array(const array&) = delete;
 
-        inline T* get_data() const { return data; }
+        inline T* get_data() { return data; }
+        inline const T* get_data() const { return data; }
         inline std::size_t get_size() const { return size; }
 
         inline unowned_array<T> get_unowned_array() {
             return unowned_array<T>(data, size);
         }
 
-        inline T& operator[](std::size_t index) {
+        T& operator[](std::size_t index) {
             if (index >= size) {
-                dbg::print("Index out of bounds:", index, ">=", size, "\n");
-                throw_exception("Array index out of bounds");
+                throw_index_out_of_bounds_exception(size, index);
             }
             return data[index];
         }
 
-        inline const T& operator[](std::size_t index) const {
+        const T& operator[](std::size_t index) const {
             if (index >= size) {
-                dbg::print("Index out of bounds:", index, ">=", size, "\n");
-                throw_exception("Array index out of bounds");
+                throw_index_out_of_bounds_exception(size, index);
             }
             return data[index];
         }
@@ -157,7 +155,7 @@ class array {
                 }
 
                 inline T& operator*() {
-                    return array_ref[index];
+                    return array_ref.data[index];
                 }
         };
         
@@ -178,7 +176,7 @@ class array {
                 }
 
                 inline const T& operator*() const {
-                    return array_ref[index];
+                    return array_ref.data[index];
                 }
         };
 

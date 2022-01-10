@@ -15,6 +15,13 @@ void throw_exception(const char* message) {
     for (;;) {}
 }
 
+void throw_index_out_of_bounds_exception(std::size_t size, std::size_t index) {
+    if (index >= size) {
+        dbg::print("Index out of bounds: ", index, " >= ", size, "\n");
+        throw_exception("Array index out of bounds");
+    }
+}
+
 void __stack_chk_fail_local() {
     throw_exception("STACK_CHECK_FAIL_LOCAL");
 }

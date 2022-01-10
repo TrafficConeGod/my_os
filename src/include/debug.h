@@ -8,9 +8,15 @@ class string;
 template<> \
 void write<type>(type val);
 
+#define IMPLEMENT_NUMBER_WRITE(type) \
+template<> \
+inline void write<type>(type val) { \
+    write_number<type, 10, 1>(val); \
+} \
+
 namespace dbg {
     template<typename T>
-    void write(T val) {
+    inline void write(T val) {
         val.write();
     }
 
@@ -60,16 +66,23 @@ namespace dbg {
             }
     };
 
-    DEFINE_WRITE(char)
-    DEFINE_WRITE(bool)
+    template<>
+    inline void write<char>(char val) {
+        putchar(val);
+    }
+
+    template<>
+    inline void write<const char*>(const char* val) {
+        std::puts(val);
+    }
     DEFINE_WRITE(const char*)
     DEFINE_WRITE(string)
     
-    DEFINE_WRITE(uint8_t)
-    DEFINE_WRITE(int16_t)
-    DEFINE_WRITE(uint16_t)
-    DEFINE_WRITE(int32_t)
-    DEFINE_WRITE(uint32_t)
+    IMPLEMENT_NUMBER_WRITE(uint8_t)
+    IMPLEMENT_NUMBER_WRITE(int16_t)
+    IMPLEMENT_NUMBER_WRITE(uint16_t)
+    IMPLEMENT_NUMBER_WRITE(int32_t)
+    IMPLEMENT_NUMBER_WRITE(uint32_t)
     DEFINE_WRITE(int64_t)
     DEFINE_WRITE(uint64_t)
     DEFINE_WRITE(float)
