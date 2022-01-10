@@ -181,8 +181,8 @@ class unowned_array {
 
 class string : public unowned_array<char> {
     public:
-        string() : unowned_array((char*)nullptr, 0) {}
-        string(const char* str) : unowned_array((char*)str, std::strlen(str)) {}
+        string();
+        string(const char* str);
 
         inline operator char*() {
             return get_data();
