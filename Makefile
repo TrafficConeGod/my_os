@@ -10,18 +10,18 @@ all: kernel
 kernel: $(OBJECTS)
 	# echo "$(OBJECTS)"
 	ld $(LDFLAGS) $(OBJECTS) -o kernel
+	strip -s kernel
 
 kerndev.iso: kernel
 	mv kernel isofiles/boot/
 	grub-mkrescue -o kerndev.iso isofiles
 
 run: kerndev.iso
-	qemu-system-i386 -cdrom kerndev.iso
+	qemu-system-x86_64 -cdrom kerndev.iso
 
 debug: kernel
 	objcopy --only-keep-debug kernel kernel.debug
-	qemu-system-i386 -s -S -kernel kernel
-
+	qemu-system-x86_64 -s -S -kernel kernel
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $< -o $@
