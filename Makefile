@@ -10,7 +10,7 @@ all: kernel
 kernel: $(OBJECTS)
 	# echo "$(OBJECTS)"
 	ld $(LDFLAGS) $(OBJECTS) -o kernel
-	strip -s kernel
+	# strip -s kernel
 
 kerndev.iso: kernel
 	mv kernel isofiles/boot/

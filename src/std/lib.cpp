@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "array.h"
+#include "unowned_array.h"
 
 extern void* end;
 unowned_array<char> heap((char*)end, 0x10000);

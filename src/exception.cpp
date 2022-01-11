@@ -2,7 +2,6 @@
 #include <cstddef>
 #include <cstdint>
 #include "debug.h"
-#include "array.h"
 
 std::size_t exception_level = 0;
 

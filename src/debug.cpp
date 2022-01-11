@@ -1,6 +1,5 @@
 #include "debug.h"
-#include "array.h"
-
+#include "custom_string.h"
 
 namespace dbg {
     template<>

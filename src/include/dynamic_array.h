@@ -1,10 +1,8 @@
 #pragma once
-#include <cstddef>
+#include "array_base.h"
 #include <cstdlib>
 #include <cstring>
 #include <initializer_list>
-#include "array.h"
-#include "exception.h"
 
 template<typename T>
 class dynamic_array : public array_base<dynamic_array<T>, T> {

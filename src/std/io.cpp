@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <cstddef>
 #include "basic.h"
-#include "array.h"
+#include "unowned_array.h"
 
 FILE* stdout = nullptr; // i love the c++ version of the c standard library
 
