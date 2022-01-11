@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <cstring>
 #include "exception.h"
 #include "debug.h"
 
@@ -7,7 +8,7 @@ template<typename S, typename T>
 class array_base {
     inline T* data() const { return ((const S*)this)->base_data(); }
     inline std::size_t size() const { return ((const S*)this)->base_size(); }
-    private:
+    protected:
         inline void in_range_check(std::size_t index) {
             if (!is_in_range(index)) {
                 throw_index_out_of_bounds_exception(size(), index);
@@ -32,14 +33,45 @@ class array_base {
             return data()[index];
         }
 
+        template<typename U>
+        U& at_as(std::size_t index) {
+            in_range_check(index);
+            in_range_check(index + sizeof(U) - 1);
+            return (U&)data()[index];
+        }
 
+        template<typename U>
+        const U& at_as(std::size_t index) const {
+            in_range_check(index);
+            in_range_check(index + sizeof(U) - 1);
+            return (const U&)data()[index];
+        }
+
+        void set_region(std::size_t index, std::size_t count, const T& value) {
+            in_range_check(index);
+            in_range_check(index + count - 1);
+            for (std::size_t i = index; i < (index + count); i++) {
+                data()[i] = value;
+            }
+        }
+
+        bool compare_region(std::size_t index, std::size_t count, const T& value) {
+            in_range_check(index);
+            in_range_check(index + count - 1);
+            for (std::size_t i = index; i < (index + count); i++) {
+                if (data()[i] != value) {
+                    return false;
+                }
+            }
+            return true;
+        }
         
         class iterator {
             private:
                 array_base& array_ref;
                 size_t index;
             public:
-                iterator(array_base& _array, size_t _index) : array_ref(_array), index(_index) {}
+                inline iterator(array_base& _array, size_t _index) : array_ref(_array), index(_index) {}
 
                 inline iterator& operator++() {
                     index++;
@@ -60,7 +92,7 @@ class array_base {
                 const array_base& array_ref;
                 size_t index;
             public:
-                const_iterator(const array_base& _array, size_t _index) : array_ref(_array), index(_index) {}
+                inline const_iterator(const array_base& _array, size_t _index) : array_ref(_array), index(_index) {}
 
                 inline const_iterator& operator++() {
                     index++;

@@ -37,7 +37,7 @@ namespace idt {
         idt_ptr.limit = (sizeof(entry) * 256) - 1;
         idt_ptr.base = (uint32_t)&idt;
 
-        std::memset(&idt, 0, sizeof(entry) * 256);
+        idt.set_region(0, 256, entry{ .base_lo = 0, .sel = 0, .always0 = 0, .flags = 0, .base_hi = 0 });
 
         idt_load();
     }
