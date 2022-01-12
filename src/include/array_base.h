@@ -8,19 +8,19 @@ template<typename S, typename T>
 class array_base {
     inline T* data() const { return ((const S*)this)->base_data(); }
     inline std::size_t size() const { return ((const S*)this)->base_size(); }
-    protected:
-        inline void in_range_check(std::size_t index) {
-            if (!is_in_range(index)) {
-                throw_index_out_of_bounds_exception(size(), index);
-            }
-        }
     public:
         inline T* get_data() { return data(); }
         inline const T* get_data() const { return data(); }
         inline std::size_t get_size() const { return size(); }
 
-        inline bool is_in_range(std::size_t index) {
+        inline bool is_in_range(std::size_t index) const {
             return index < size();
+        }
+
+        inline void in_range_check(std::size_t index) const {
+            if (!is_in_range(index)) {
+                throw_index_out_of_bounds_exception(size(), index);
+            }
         }
 
         T& operator[](std::size_t index) {
@@ -47,7 +47,7 @@ class array_base {
             return (const U&)data()[index];
         }
 
-        void set_region(std::size_t index, std::size_t count, const T& value) {
+        void set_range(std::size_t index, std::size_t count, const T& value) {
             in_range_check(index);
             in_range_check(index + count - 1);
             for (std::size_t i = index; i < (index + count); i++) {
@@ -55,11 +55,36 @@ class array_base {
             }
         }
 
-        bool compare_region(std::size_t index, std::size_t count, const T& value) {
+        template<typename U>
+        void copy_range(std::size_t index, std::size_t count, const U& array, std::size_t array_index) {
+            in_range_check(index);
+            in_range_check(index + count - 1);
+            array.in_range_check(array_index);
+            array.in_range_check(array_index + count - 1);
+            for (std::size_t i = index; i < (index + count); i++) {
+                data()[i] = array[(array_index + i) - index];
+            }
+        }
+
+        bool compare_range_to_value(std::size_t index, std::size_t count, const T& value) const {
             in_range_check(index);
             in_range_check(index + count - 1);
             for (std::size_t i = index; i < (index + count); i++) {
                 if (data()[i] != value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        template<typename U>
+        bool compare_range_to_range(std::size_t index, std::size_t count, const U& array, std::size_t array_index) const {
+            in_range_check(index);
+            in_range_check(index + count - 1);
+            array.in_range_check(array_index);
+            array.in_range_check(array_index + count - 1);
+            for (std::size_t i = index; i < (index + count); i++) {
+                if (data()[i] != array[(array_index + i) - index]) {
                     return false;
                 }
             }
