@@ -11,7 +11,7 @@ struct chunk_header {
 };
 
 void* malloc(std::size_t size) {
-    if (!heap.compare_range_to_value(current_heap_index, size, 0x00)) {
+    while (!heap.compare_range_to_value(current_heap_index, sizeof(chunk_header) + size, 0x00)) {
         current_heap_index += size;
         current_heap_index %= heap.get_size(); // this and below are risky cause this could literally just cause a stack overflow if the heap is full
     }

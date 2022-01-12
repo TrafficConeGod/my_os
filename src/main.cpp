@@ -26,6 +26,9 @@ extern "C" void k_main() {
 
     dynamic_array<int> arr = { 1, 2, 3 };
 
+    arr.push({ 4, 5, 6 });
+    arr.push({ 1, 2, 4 });
+
     for (auto i : arr) {
         dbg::print(i, ", ");
     }

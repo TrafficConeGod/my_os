@@ -66,6 +66,18 @@ namespace dbg {
             }
     };
 
+    template<typename T>
+    class hex_writer {
+        T val;
+        public:
+            hex_writer(T _val) : val(_val) {}
+
+            inline void write() {
+                dbg::write("0x");
+                write_number<T, 16, 1>(val);
+            }
+    };
+
     template<>
     inline void write<char>(char val) {
         putchar(val);
@@ -77,7 +89,6 @@ namespace dbg {
     }
     DEFINE_WRITE(string)
     DEFINE_WRITE(bool)
-    
     IMPLEMENT_NUMBER_WRITE(uint8_t)
     IMPLEMENT_NUMBER_WRITE(int16_t)
     IMPLEMENT_NUMBER_WRITE(uint16_t)

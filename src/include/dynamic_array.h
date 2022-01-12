@@ -22,7 +22,7 @@ class dynamic_array : public array_base<dynamic_array<T>, T> {
             std::memcpy(data, other.data, sizeof(T) * other.size);
         }
         ~dynamic_array() {
-            std::free(data);
+            // std::free(data);
         }
 
         inline T* base_data() const { return (T*)data; }
@@ -32,6 +32,27 @@ class dynamic_array : public array_base<dynamic_array<T>, T> {
             size++;
             data = (T*)realloc(data, sizeof(T) * size);
             data[size - 1] = elem;
+        }
+
+        void push(std::initializer_list<T> elems) {
+            size += elems.size();
+            data = (T*)realloc(data, sizeof(T) * size);
+            std::size_t index = size - elems.size();
+            for (const auto& elem : elems) {
+                data[index] = elem;
+                index++;
+            }
+        }
+
+        template<typename U>
+        void push(const U& array) {
+            size += array.size();
+            data = (T*)realloc(data, sizeof(T) * size);
+            std::size_t index = size - array.size();
+            for (const auto& elem : array) {
+                data[index] = elem;
+                index++;
+            }
         }
 
         T pop() {
