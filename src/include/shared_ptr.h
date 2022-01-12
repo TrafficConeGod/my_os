@@ -1,5 +1,9 @@
 #pragma once
 
+/**
+ * @brief Reference counted pointer (smart pointer)
+ * @tparam T The data type
+ */
 template<typename T>
 class shared_ptr {
     T* data;

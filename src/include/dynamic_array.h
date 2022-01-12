@@ -4,6 +4,9 @@
 #include <cstring>
 #include <initializer_list>
 
+/**
+ * @brief Dynamic heap-allocated array
+ */
 template<typename T>
 class dynamic_array : public array_base<dynamic_array<T>, T> {
     T* data;

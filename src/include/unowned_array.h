@@ -1,6 +1,9 @@
 #pragma once
 #include "array_base.h"
 
+/**
+ * @brief Unowned array with a fixed size
+ */
 template<typename T>
 class unowned_array : public array_base<unowned_array<T>, T> {
     T* data;

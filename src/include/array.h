@@ -2,6 +2,11 @@
 #include "array_base.h"
 #include <initializer_list>
 
+/**
+ * @brief Array with a fixed size
+ * 
+ * @tparam T The type of the array
+ */
 template<typename T, std::size_t size>
 class array : public array_base<array<T, size>, T> {
     T data[size];

@@ -3,6 +3,11 @@
 #include <cwctype>
 #include <cstdio>
 
+/**
+ * @brief The string class for any character type (char, wchar_t, etc.)
+ * 
+ * @tparam T The type of the string
+ */
 template<typename T>
 class basic_string : public unowned_array<T> {
     static std::size_t get_length(const T* str) {

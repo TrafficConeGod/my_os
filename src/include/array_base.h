@@ -4,6 +4,12 @@
 #include "exception.h"
 #include "debug.h"
 
+/**
+ * @brief Base class for all runtime arrays
+ * 
+ * @tparam S Curiously recurring template pattern of the derived class
+ * @tparam T The type of the array
+ */
 template<typename S, typename T>
 class array_base {
     inline T* data() const { return ((const S*)this)->base_data(); }
