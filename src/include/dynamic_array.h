@@ -9,8 +9,8 @@ class dynamic_array : public array_base<dynamic_array<T>, T> {
     T* data;
     std::size_t size;
     public:
-        inline dynamic_array(std::size_t _size) : data((T*)malloc(sizeof(T) * _size)), size(_size) {}
-        dynamic_array(std::initializer_list<T> list) : data((T*)malloc(sizeof(T) * list.size())), size(list.size()) {
+        inline dynamic_array(std::size_t _size) : data((T*)std::malloc(sizeof(T) * _size)), size(_size) {}
+        dynamic_array(std::initializer_list<T> list) : data((T*)std::malloc(sizeof(T) * list.size())), size(list.size()) {
             array_base<dynamic_array<T>, T>::in_range_check(list.size() - 1);
             std::size_t index = 0;
             for (const auto& elem : list) {
@@ -18,7 +18,7 @@ class dynamic_array : public array_base<dynamic_array<T>, T> {
                 index++;
             }
         }
-        inline dynamic_array(const dynamic_array& other) : data((T*)malloc(sizeof(T) * other.size)), size(other.size) {
+        inline dynamic_array(const dynamic_array& other) : data((T*)std::malloc(sizeof(T) * other.size)), size(other.size) {
             std::memcpy(data, other.data, sizeof(T) * other.size);
         }
         inline ~dynamic_array() {
