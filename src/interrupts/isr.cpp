@@ -1,7 +1,7 @@
 #include "system.h"
 #include "basic.h"
 #include "array.h"
-#include "custom_string.h"
+#include "basic_string.h"
 #include "function.h"
 #include "exception.h"
 

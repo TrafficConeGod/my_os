@@ -7,6 +7,9 @@ class array : public array_base<array<T, size>, T> {
     T data[size];
     public:
         inline array() {}
+        /**
+         * @param list The list to initialize the array with
+         */
         array(std::initializer_list<T> list) {
             array_base<array<T, size>, T>::in_range_check(list.size() - 1);
             std::size_t index = 0;

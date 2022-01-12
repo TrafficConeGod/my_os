@@ -1,6 +1,6 @@
 #include "include/system.h"
 #include "include/basic.h"
-#include <cstdio>
+#include "debug.h"
 #include "array.h"
 
 namespace keyboard {
@@ -51,7 +51,7 @@ namespace keyboard {
         if (keycode & 0x80) {
 
         } else {
-            putchar(keycode_map[keycode]);
+            dbg::print(keycode_map[keycode]);
         }
     }
 

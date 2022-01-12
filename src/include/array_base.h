@@ -9,30 +9,54 @@ class array_base {
     inline T* data() const { return ((const S*)this)->base_data(); }
     inline std::size_t size() const { return ((const S*)this)->base_size(); }
     public:
+        /**
+         * @brief Data pointer getter
+         */
         inline T* get_data() { return data(); }
+        /**
+         * @brief Data pointer getter
+         */
         inline const T* get_data() const { return data(); }
+        /**
+         * @brief Array size getter
+         */
         inline std::size_t get_size() const { return size(); }
 
+        /**
+         * @brief Returns whether an index is in range of the array or not
+         */
         inline bool is_in_range(std::size_t index) const {
             return index < size();
         }
 
+        /**
+         * @brief Throws exception if index is out of range
+         */
         inline void in_range_check(std::size_t index) const {
             if (!is_in_range(index)) {
-                throw_index_out_of_bounds_exception(size(), index);
+                throw_index_out_of_range_exception(size(), index);
             }
         }
 
+        /**
+         * @brief Safe getter of element at index
+         */
         T& operator[](std::size_t index) {
             in_range_check(index);
             return data()[index];
         }
 
+        /**
+         * @brief Safe getter of element at index
+         */
         const T& operator[](std::size_t index) const {
             in_range_check(index);
             return data()[index];
         }
 
+        /**
+         * @brief Safe getter of element of reinterpret casted type at index
+         */
         template<typename U>
         U& at_as(std::size_t index) {
             in_range_check(index);
@@ -40,6 +64,10 @@ class array_base {
             return (U&)data()[index];
         }
 
+
+        /**
+         * @brief Safe getter of element of reinterpret casted type at index
+         */
         template<typename U>
         const U& at_as(std::size_t index) const {
             in_range_check(index);
@@ -47,6 +75,13 @@ class array_base {
             return (const U&)data()[index];
         }
 
+        /**
+         * @brief Sets a range in array to a value
+         * 
+         * @param index The start index
+         * @param count The amount of elements to set
+         * @param value The value to set to
+         */
         void set_range(std::size_t index, std::size_t count, const T& value) {
             in_range_check(index);
             in_range_check(index + count - 1);
@@ -55,6 +90,14 @@ class array_base {
             }
         }
 
+        /**
+         * @brief Copies a range in array from another array range
+         * 
+         * @param index The start index
+         * @param count The size of both ranges
+         * @param array The other array
+         * @param other_index The start index of the other array
+         */
         template<typename U>
         void copy_range(std::size_t index, std::size_t count, const U& array, std::size_t array_index) {
             in_range_check(index);
@@ -66,6 +109,14 @@ class array_base {
             }
         }
 
+        /**
+         * @brief Compares a range in array to a value
+         * 
+         * @param index The start index
+         * @param count The amount of elements to compare
+         * @param value The value to compare to
+         * @return true If the entire range equals value
+         */
         bool compare_range_to_value(std::size_t index, std::size_t count, const T& value) const {
             in_range_check(index);
             in_range_check(index + count - 1);
@@ -77,6 +128,15 @@ class array_base {
             return true;
         }
 
+        /**
+         * @brief Compares a range in array from another array range
+         * 
+         * @param index The start index
+         * @param count The size of both ranges
+         * @param array The other array
+         * @param other_index The start index of the other array
+         * @return true If both ranges are equal
+         */
         template<typename U>
         bool compare_range_to_range(std::size_t index, std::size_t count, const U& array, std::size_t array_index) const {
             in_range_check(index);

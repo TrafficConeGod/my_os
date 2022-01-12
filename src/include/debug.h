@@ -2,8 +2,6 @@
 #include <cstdint>
 #include <cstdio>
 
-class string;
-
 #define DEFINE_WRITE(type) \
 template<> \
 void write<type>(type val);
@@ -87,7 +85,6 @@ namespace dbg {
     inline void write<const char*>(const char* val) {
         std::puts(val);
     }
-    DEFINE_WRITE(string)
     DEFINE_WRITE(bool)
     IMPLEMENT_NUMBER_WRITE(uint8_t)
     IMPLEMENT_NUMBER_WRITE(int16_t)

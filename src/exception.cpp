@@ -14,10 +14,10 @@ void throw_exception(const char* message) {
     for (;;) {}
 }
 
-void throw_index_out_of_bounds_exception(std::size_t size, std::size_t index) {
+void throw_index_out_of_range_exception(std::size_t size, std::size_t index) {
     if (index >= size) {
-        dbg::print("Index out of bounds: ", index, " >= ", size, "\n");
-        throw_exception("Array index out of bounds");
+        dbg::print("Index out of range: ", index, " >= ", size, "\n");
+        throw_exception("Array index out of range");
     }
 }
 
