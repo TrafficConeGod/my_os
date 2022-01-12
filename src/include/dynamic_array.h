@@ -21,8 +21,8 @@ class dynamic_array : public array_base<dynamic_array<T>, T> {
         inline dynamic_array(const dynamic_array& other) : data((T*)std::malloc(sizeof(T) * other.size)), size(other.size) {
             std::memcpy(data, other.data, sizeof(T) * other.size);
         }
-        ~dynamic_array() {
-            // std::free(data);
+        inline ~dynamic_array() {
+            std::free(data);
         }
 
         inline T* base_data() const { return (T*)data; }
