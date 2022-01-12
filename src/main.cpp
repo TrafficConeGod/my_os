@@ -24,7 +24,7 @@ extern "C" void k_main() {
     __asm__ __volatile__("sti");
     dbg::print("System started successfully!\n");
 
-    // dynamic_array<int> arr = { 1, 2, 3 };
+    dynamic_array<int> arr = { 1, 2, 3 };
 
     asm volatile("int $0x80");
     for (;;);
