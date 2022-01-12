@@ -26,6 +26,11 @@ extern "C" void k_main() {
 
     dynamic_array<int> arr = { 1, 2, 3 };
 
+    for (auto i : arr) {
+        dbg::print(i, ", ");
+    }
+    dbg::print("\n");
+
     asm volatile("int $0x80");
     for (;;);
 }

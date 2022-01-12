@@ -62,7 +62,7 @@ class array_base {
             array.in_range_check(array_index);
             array.in_range_check(array_index + count - 1);
             for (std::size_t i = index; i < (index + count); i++) {
-                data()[i] = array[(array_index + i) - index];
+                data()[i] = array.get_data()[(array_index + i) - index];
             }
         }
 
@@ -84,7 +84,7 @@ class array_base {
             array.in_range_check(array_index);
             array.in_range_check(array_index + count - 1);
             for (std::size_t i = index; i < (index + count); i++) {
-                if (data()[i] != array[(array_index + i) - index]) {
+                if (data()[i] != array.get_data()[(array_index + i) - index]) {
                     return false;
                 }
             }
