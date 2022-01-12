@@ -3,6 +3,9 @@
 template<typename X>
 class function;
 
+/**
+ * @brief Wrapper for a function pointer
+ */
 template<typename Return, typename... Args>
 class function<Return(Args...)> {
     Return (*ptr)(Args...);

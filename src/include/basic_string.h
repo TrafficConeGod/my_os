@@ -12,15 +12,28 @@ class basic_string : public unowned_array<T> {
     }
     public:
         basic_string() {}
+        /**
+         * @param str The string pointer to use
+         */
         basic_string(const T* str) : unowned_array<T>((T*)str, get_length(str)) {}
 
+        /**
+         * @brief Casts the raw string pointer
+         */
         inline operator T*() {
             return array_base<unowned_array<T>, T>::get_data();
         }
+
+        /**
+         * @brief Casts the raw string pointer
+         */
         inline operator const T*() const {
             return array_base<unowned_array<T>, T>::get_data();
         }
 
+        /**
+         * @brief Write function for debug library
+         */
         void write() {
             for (auto ch : (*this)) {
                 std::putchar(ch);

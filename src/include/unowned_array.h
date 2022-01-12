@@ -7,6 +7,10 @@ class unowned_array : public array_base<unowned_array<T>, T> {
     std::size_t size;
     public:
         inline unowned_array() : data((T*)nullptr), size(0) {}
+        /**
+         * @param _data The data for the unowned array
+         * @param _size The size of the data
+         */
         inline unowned_array(T* _data, std::size_t _size) : data(_data), size(_size) {}
 
         inline T* base_data() const { return (T*)data; }

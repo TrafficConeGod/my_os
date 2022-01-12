@@ -13,11 +13,21 @@ inline void write<type>(type val) { \
 } \
 
 namespace dbg {
+    /**
+     * @brief Write a value of type T to the screen
+     */
     template<typename T>
     inline void write(T val) {
         val.write();
     }
 
+    /**
+     * @brief Write a number to the screen
+     * 
+     * @tparam T The type of number
+     * @tparam base The base to write with
+     * @tparam min_digits The minimum digits to write
+     */
     template<typename T, size_t base, size_t min_digits>
     void write_number(T number) {
         size_t digits = 0;
@@ -53,6 +63,9 @@ namespace dbg {
         std::puts(chars);
     }
 
+    /**
+     * @brief Writer type wrapper for write_number
+     */
     template<typename T, size_t base, size_t min_digits>
     class number_writer {
         T val;
@@ -64,6 +77,9 @@ namespace dbg {
             }
     };
 
+    /**
+     * @brief Writer type wrapper for hex numbers
+     */
     template<typename T>
     class hex_writer {
         T val;
@@ -76,11 +92,17 @@ namespace dbg {
             }
     };
 
+    /**
+     * @brief Writes a character
+     */
     template<>
     inline void write<char>(char val) {
         putchar(val);
     }
 
+    /**
+     * @brief Writes a const char* string
+     */
     template<>
     inline void write<const char*>(const char* val) {
         std::puts(val);
@@ -96,14 +118,31 @@ namespace dbg {
     DEFINE_WRITE(float)
     DEFINE_WRITE(double)
 
+    /**
+     * @brief Dead end for sub_print
+     */
     inline void sub_print() {}
 
+    /**
+     * @brief Prints a values to the screen
+     * 
+     * @tparam T The first type
+     * @tparam Types The remaining types
+     * @param arg The first value
+     * @param args The remaining values
+     */
     template<typename T, typename ...Types>
     inline void sub_print(T arg, Types... args) {
         write<T>(arg);
         sub_print(args...);
     }
 
+    /**
+     * @brief Prints values to the screen
+     * 
+     * @tparam Types The types to print
+     * @param args The values to print
+     */
     template<typename ...Types>
     inline void print(Types... args) {
         sub_print(args...);
